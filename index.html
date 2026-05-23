@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TableIn — Masana otur, sohbete katıl.</title>
+<meta name="description" content="Gerçek hayatta yeni insanlarla tanışmanın en kolay yolu. İlgi alanına göre masa aç ya da yakındaki bir masaya katıl — kahve, yemek, sinema, oyun seni bekliyor.">
+
+<!-- Open Graph -->
+<meta property="og:title" content="TableIn — Masana otur, sohbete katıl.">
+<meta property="og:description" content="Gerçek hayatta yeni insanlarla tanışmanın en kolay yolu. Swipe yok, match yok, sadece gerçek buluşmalar.">
+<meta property="og:image" content="https://jointablein.com/assets/og.png">
+<meta property="og:url" content="https://jointablein.com">
+<meta property="og:type" content="website">
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="/assets/logo.png">
+
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0A0C12;
+    --bg-2:#10131C;
+    --card:rgba(255,255,255,0.04);
+    --border:rgba(255,255,255,0.08);
+    --text:#FFFFFF;
+    --text-dim:#A8AAB5;
+    --text-tertiary:#71727F;
+    --primary:#FF6D00;
+    --primary-dim:#FF8533;
+    --accent:#E53935;
+    --success:#22C55E;
+  }
+  html{scroll-behavior:smooth}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.55;
+    overflow-x:hidden;
+  }
+  a{color:var(--primary);text-decoration:none}
+  a:hover{color:var(--primary-dim)}
+  .container{max-width:1100px;margin:0 auto;padding:0 24px}
+
+  /* Background glow */
+  body::before{
+    content:'';
+    position:fixed;inset:0;
+    background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(255,109,0,0.18) 0%,transparent 70%),
+               radial-gradient(ellipse 60% 50% at 90% 50%,rgba(229,57,53,0.10) 0%,transparent 70%);
+    pointer-events:none;
+    z-index:0;
+  }
+  main{position:relative;z-index:1}
+
+  /* Header */
+  header{
+    position:sticky;top:0;
+    background:rgba(10,12,18,0.7);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border);
+    z-index:100;
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;letter-spacing:-0.02em}
+  .brand img{height:34px;width:auto}
+  .nav-links{display:flex;gap:24px;align-items:center}
+  .nav-links a{color:var(--text-dim);font-size:14px;font-weight:500}
+  .nav-links a:hover{color:var(--text)}
+  .lang-toggle{
+    background:var(--card);border:1px solid var(--border);color:var(--text-dim);
+    padding:6px 10px;border-radius:8px;cursor:pointer;font-size:13px;
+  }
+  @media (max-width:640px){.nav-links a:not(.nav-cta){display:none}}
+
+  /* Hero */
+  .hero{padding:80px 0 60px;text-align:center}
+  .hero h1{
+    font-size:clamp(40px,7vw,72px);
+    font-weight:800;
+    letter-spacing:-0.04em;
+    line-height:1.05;
+    margin-bottom:20px;
+    background:linear-gradient(180deg,#fff 0%,#bbb 100%);
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+  .hero h1 .accent{
+    background:linear-gradient(90deg,var(--primary) 0%,var(--accent) 100%);
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+  .hero p.lead{
+    font-size:clamp(17px,2vw,21px);
+    color:var(--text-dim);
+    max-width:640px;margin:0 auto 32px;
+    line-height:1.5;
+  }
+  .badges{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:48px}
+  .badge{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:14px 22px;border-radius:14px;
+    background:var(--text);color:#000;
+    font-weight:700;font-size:15px;
+    transition:transform 0.2s,box-shadow 0.2s;
+    border:none;cursor:pointer;
+  }
+  .badge:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,109,0,0.25);color:#000}
+  .badge.outline{background:transparent;color:var(--text);border:1px solid var(--border)}
+  .badge.outline:hover{background:var(--card);color:var(--text)}
+  .badge svg{width:22px;height:22px}
+
+  .hero-phones{
+    display:flex;justify-content:center;align-items:end;gap:20px;
+    margin-top:30px;
+    perspective:1200px;
+  }
+  .hero-phones img{
+    width:240px;
+    border-radius:24px;
+    box-shadow:0 30px 80px rgba(0,0,0,0.5),0 0 0 2px rgba(255,255,255,0.06);
+    transition:transform 0.3s;
+  }
+  .hero-phones img:nth-child(1){transform:rotate(-6deg) translateY(20px)}
+  .hero-phones img:nth-child(2){transform:scale(1.05);z-index:2}
+  .hero-phones img:nth-child(3){transform:rotate(6deg) translateY(20px)}
+  @media (max-width:640px){
+    .hero-phones img:nth-child(1),.hero-phones img:nth-child(3){display:none}
+    .hero-phones img{width:280px}
+  }
+
+  /* Features */
+  section{padding:80px 0;position:relative}
+  section h2{
+    text-align:center;
+    font-size:clamp(28px,4vw,42px);
+    font-weight:800;
+    letter-spacing:-0.03em;
+    margin-bottom:16px;
+  }
+  section .subtitle{
+    text-align:center;color:var(--text-dim);
+    max-width:580px;margin:0 auto 56px;
+    font-size:17px;
+  }
+  .features{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:24px;
+  }
+  .feature{
+    background:var(--card);border:1px solid var(--border);
+    padding:32px 26px;border-radius:20px;
+    transition:transform 0.2s,border-color 0.2s;
+  }
+  .feature:hover{transform:translateY(-4px);border-color:rgba(255,109,0,0.3)}
+  .feature .ic{
+    width:48px;height:48px;border-radius:12px;
+    background:linear-gradient(135deg,rgba(255,109,0,0.2),rgba(229,57,53,0.1));
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:18px;font-size:22px;
+  }
+  .feature h3{font-size:20px;font-weight:700;margin-bottom:10px;letter-spacing:-0.01em}
+  .feature p{color:var(--text-dim);font-size:15px;line-height:1.6}
+
+  /* Screens row */
+  .screens-wrap{overflow:hidden;padding:40px 0;mask-image:linear-gradient(90deg,transparent 0%,#000 5%,#000 95%,transparent 100%)}
+  .screens-row{display:flex;gap:20px;animation:slide 35s linear infinite}
+  @keyframes slide{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  .screens-row img{
+    width:200px;border-radius:18px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.4),0 0 0 1px rgba(255,255,255,0.05);
+    flex-shrink:0;
+  }
+
+  /* Waitlist */
+  .waitlist{
+    background:linear-gradient(135deg,rgba(255,109,0,0.08) 0%,rgba(229,57,53,0.04) 100%);
+    border:1px solid var(--border);
+    border-radius:24px;
+    padding:48px 32px;
+    text-align:center;
+    max-width:600px;margin:0 auto;
+  }
+  .waitlist h2{margin-bottom:8px}
+  .waitlist p{color:var(--text-dim);margin-bottom:28px}
+  .waitlist-form{display:flex;gap:10px;max-width:440px;margin:0 auto;flex-wrap:wrap}
+  .waitlist-form input{
+    flex:1;min-width:200px;
+    padding:14px 18px;border-radius:12px;
+    background:rgba(0,0,0,0.3);
+    border:1px solid var(--border);
+    color:var(--text);font-size:15px;
+    outline:none;
+    transition:border-color 0.2s;
+  }
+  .waitlist-form input:focus{border-color:var(--primary)}
+  .waitlist-form button{
+    padding:14px 28px;border-radius:12px;
+    background:linear-gradient(135deg,var(--primary),var(--accent));
+    color:#fff;font-weight:700;font-size:15px;
+    border:none;cursor:pointer;
+    transition:transform 0.2s,box-shadow 0.2s;
+  }
+  .waitlist-form button:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 10px 25px rgba(255,109,0,0.4)}
+  .waitlist-form button:disabled{opacity:0.6;cursor:not-allowed}
+  .waitlist-msg{margin-top:16px;font-size:14px;min-height:20px}
+  .waitlist-msg.success{color:var(--success)}
+  .waitlist-msg.error{color:var(--accent)}
+
+  /* Contact */
+  .contact-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:20px;max-width:760px;margin:0 auto;
+  }
+  .contact-card{
+    background:var(--card);border:1px solid var(--border);
+    border-radius:20px;padding:32px 24px;text-align:center;
+    transition:transform 0.2s,border-color 0.2s;
+  }
+  .contact-card:hover{transform:translateY(-4px);border-color:rgba(255,109,0,0.3)}
+  .contact-card .ic{font-size:32px;margin-bottom:12px}
+  .contact-card h3{font-size:17px;margin-bottom:6px}
+  .contact-card p{color:var(--text-dim);font-size:14px}
+  .contact-card a{font-weight:600}
+
+  /* Footer */
+  footer{
+    border-top:1px solid var(--border);
+    padding:48px 0 32px;margin-top:80px;
+  }
+  .footer-grid{
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:32px;
+    margin-bottom:32px;
+  }
+  .footer-brand{max-width:280px}
+  .footer-brand .brand{margin-bottom:12px}
+  .footer-brand p{color:var(--text-tertiary);font-size:13px;line-height:1.6}
+  .footer-col h4{
+    font-size:13px;text-transform:uppercase;letter-spacing:0.08em;
+    color:var(--text-tertiary);margin-bottom:14px;font-weight:600;
+  }
+  .footer-col a{
+    display:block;color:var(--text-dim);font-size:14px;
+    padding:5px 0;text-decoration:none;
+  }
+  .footer-col a:hover{color:var(--text)}
+  .footer-bottom{
+    border-top:1px solid var(--border);padding-top:24px;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
+    color:var(--text-tertiary);font-size:13px;
+  }
+
+  /* Locale switching */
+  [lang-tr] [data-en]{display:none}
+  [lang-en] [data-tr]{display:none}
+</style>
+</head>
+<body lang-tr>
+<header>
+  <div class="container nav">
+    <a href="#" class="brand">
+      <img src="/assets/logo.png" alt="TableIn">
+      TableIn
+    </a>
+    <div class="nav-links">
+      <a href="#features" data-tr>Özellikler</a><a href="#features" data-en>Features</a>
+      <a href="#contact" data-tr>İletişim</a><a href="#contact" data-en>Contact</a>
+      <button class="lang-toggle" onclick="toggleLang()">EN / TR</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="container">
+      <h1>
+        <span data-tr>Masana otur,<br><span class="accent">sohbete katıl.</span></span>
+        <span data-en>Sit at the table,<br><span class="accent">join the conversation.</span></span>
+      </h1>
+      <p class="lead">
+        <span data-tr>İlgi alanlarına göre gerçek hayatta buluşmalar düzenle. Yapay zekâ algoritmaları yerine ortak bir konu seç, etrafındaki insanları o masaya davet et. Eşleşme beklemek yok, sürekli kaydırma yok — sadece gerçek sohbet, gerçek buluşma.</span>
+        <span data-en>Real-life meetups based on shared interests. Skip the algorithms — pick a topic, invite people around you to your table. No matching, no swiping — just real conversation and real meetups.</span>
+      </p>
+      <div class="badges">
+        <a href="#waitlist" class="badge" data-tr>📱 Yakında App Store'da</a>
+        <a href="#waitlist" class="badge" data-en>📱 Coming soon to App Store</a>
+        <a href="#waitlist" class="badge outline" data-tr>🤖 Yakında Google Play'de</a>
+        <a href="#waitlist" class="badge outline" data-en>🤖 Coming soon to Google Play</a>
+      </div>
+      <div class="hero-phones">
+        <img src="/assets/screen-tables.png" alt="My Tables">
+        <img src="/assets/screen-discover.png" alt="Discover">
+        <img src="/assets/screen-profile.png" alt="Profile">
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="container">
+      <h2>
+        <span data-tr>Neden TableIn?</span>
+        <span data-en>Why TableIn?</span>
+      </h2>
+      <p class="subtitle">
+        <span data-tr>Yeni insanlarla tanışmanın doğal yolu — kafe masanızdan başlayarak.</span>
+        <span data-en>The natural way to meet new people — starting from a café table.</span>
+      </p>
+      <div class="features">
+        <div class="feature">
+          <div class="ic">🪑</div>
+          <h3 data-tr>Masa Aç ya da Katıl</h3>
+          <h3 data-en>Open or Join a Table</h3>
+          <p data-tr>Kahve, yemek, oyun, sinema, müzik… İlgi alanına göre masa oluştur veya çevrendeki açık masalardan birine katıl. Saatini, mekânını ve katılımcı sayısını sen belirle.</p>
+          <p data-en>Coffee, dinner, gaming, cinema, music… Open a table by interest or join one nearby. You decide the time, place, and headcount.</p>
+        </div>
+        <div class="feature">
+          <div class="ic">🗺️</div>
+          <h3 data-tr>Keşfet</h3>
+          <h3 data-en>Discover</h3>
+          <p data-tr>Yakınındaki aktif masaları, kategorileri ve katılımcıları gör. Bugün, yarın veya hafta sonu — filtreni seç, sana uygun olanı bul.</p>
+          <p data-en>See active tables nearby with categories and participants. Today, tomorrow, this week — filter and find what fits.</p>
+        </div>
+        <div class="feature">
+          <div class="ic">💬</div>
+          <h3 data-tr>Anlık Sohbet</h3>
+          <h3 data-en>Live Chat</h3>
+          <p data-tr>Bir masaya katılınca otomatik olarak masanın özel mesajlaşma odasına dahil olursun. Buluşmadan önce tanışmak bir dokunuş kadar yakın.</p>
+          <p data-en>Join a table and you're auto-added to its private chat. Saying hi before the meetup is just a tap away.</p>
+        </div>
+        <div class="feature">
+          <div class="ic">⭐</div>
+          <h3 data-tr>Güven Skoru</h3>
+          <h3 data-en>Trust Score</h3>
+          <p data-tr>Her buluşma sonrası katılımcılar birbirini değerlendirir. Güvenilir kullanıcılar daha çok görünür olur; sahte profiller topluluk dışı kalır.</p>
+          <p data-en>Participants rate each other after every meetup. Trustworthy users get more visibility; fake profiles are filtered out.</p>
+        </div>
+        <div class="feature">
+          <div class="ic">🔔</div>
+          <h3 data-tr>Akıllı Hatırlatmalar</h3>
+          <h3 data-en>Smart Reminders</h3>
+          <p data-tr>Yaklaşan masalar, yeni mesajlar ve yoklama bildirimleri — saatini ve mekânını kaçırma.</p>
+          <p data-en>Notifications for upcoming tables, new messages and post-meet attendance — never miss your spot.</p>
+        </div>
+        <div class="feature">
+          <div class="ic">🔒</div>
+          <h3 data-tr>Güvenlik ve Gizlilik</h3>
+          <h3 data-en>Safety &amp; Privacy</h3>
+          <p data-tr>18+ yaş sınırı, otomatik fotoğraf moderasyonu, KVKK uyumlu veri işleme, çocukların korunmasına sıfır tolerans politikası.</p>
+          <p data-en>18+ age gate, automated photo moderation, GDPR-compliant processing, and a zero-tolerance child safety policy.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:40px 0">
+    <div class="screens-wrap">
+      <div class="screens-row">
+        <img src="/assets/screen-discover.png" alt="">
+        <img src="/assets/screen-tables.png" alt="">
+        <img src="/assets/screen-messages.png" alt="">
+        <img src="/assets/screen-profile.png" alt="">
+        <img src="/assets/screen-discover.png" alt="">
+        <img src="/assets/screen-tables.png" alt="">
+        <img src="/assets/screen-messages.png" alt="">
+        <img src="/assets/screen-profile.png" alt="">
+      </div>
+    </div>
+  </section>
+
+  <section id="waitlist">
+    <div class="container">
+      <div class="waitlist">
+        <h2>
+          <span data-tr>Yayınlandığında haber ver</span>
+          <span data-en>Notify me when it launches</span>
+        </h2>
+        <p>
+          <span data-tr>App Store ve Google Play'de yayınlandığında e-postanıza haber gönderelim. Spam yok, sadece launch bildirimi.</span>
+          <span data-en>We'll email you the moment we launch on App Store and Google Play. No spam — just one notification.</span>
+        </p>
+        <form class="waitlist-form" id="waitlist-form">
+          <input type="email" id="waitlist-email" placeholder="email@example.com" required autocomplete="email">
+          <button type="submit" id="waitlist-submit">
+            <span data-tr>Bana Haber Ver</span>
+            <span data-en>Notify Me</span>
+          </button>
+        </form>
+        <div class="waitlist-msg" id="waitlist-msg"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <h2>
+        <span data-tr>İletişim ve Destek</span>
+        <span data-en>Contact &amp; Support</span>
+      </h2>
+      <p class="subtitle">
+        <span data-tr>Sorun, geri bildirim, basın talebi, iş birliği — her şey için buradayız.</span>
+        <span data-en>Issues, feedback, press, partnerships — we're here for all of it.</span>
+      </p>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div class="ic">📧</div>
+          <h3 data-tr>Genel İletişim</h3>
+          <h3 data-en>General Contact</h3>
+          <p><a href="mailto:info@jointablein.com?subject=TableIn">info@jointablein.com</a></p>
+        </div>
+        <div class="contact-card">
+          <div class="ic">🛟</div>
+          <h3 data-tr>Kullanıcı Desteği</h3>
+          <h3 data-en>User Support</h3>
+          <p><a href="mailto:info@jointablein.com?subject=Destek%20Talebi">Destek Talebi Aç</a></p>
+        </div>
+        <div class="contact-card">
+          <div class="ic">🛡️</div>
+          <h3 data-tr>Güvenlik / CSAE</h3>
+          <h3 data-en>Safety / CSAE</h3>
+          <p><a href="mailto:info@jointablein.com?subject=Güvenlik%20Bildirimi">info@jointablein.com</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="brand">
+          <img src="/assets/logo.png" alt="TableIn">
+          TableIn
+        </a>
+        <p data-tr>Türkiye merkezli sosyal buluşma platformu. Masana otur, sohbete katıl.</p>
+        <p data-en>Turkey-based social meetup platform. Sit at the table, join the conversation.</p>
+      </div>
+      <div class="footer-col">
+        <h4 data-tr>Ürün</h4>
+        <h4 data-en>Product</h4>
+        <a href="#features" data-tr>Özellikler</a>
+        <a href="#features" data-en>Features</a>
+        <a href="#waitlist" data-tr>Yayın Bildirimi</a>
+        <a href="#waitlist" data-en>Launch Notice</a>
+      </div>
+      <div class="footer-col">
+        <h4 data-tr>Yasal</h4>
+        <h4 data-en>Legal</h4>
+        <a href="https://bilaltuylu.github.io/tablein-legal/privacy.html" target="_blank" rel="noopener" data-tr>Gizlilik Politikası</a>
+        <a href="https://bilaltuylu.github.io/tablein-legal/privacy.html" target="_blank" rel="noopener" data-en>Privacy Policy</a>
+        <a href="https://bilaltuylu.github.io/tablein-legal/terms.html" target="_blank" rel="noopener" data-tr>Kullanım Koşulları</a>
+        <a href="https://bilaltuylu.github.io/tablein-legal/terms.html" target="_blank" rel="noopener" data-en>Terms of Use</a>
+        <a href="https://bilaltuylu.github.io/tablein-legal/csae-policy.html" target="_blank" rel="noopener" data-tr>Çocuk Güvenliği</a>
+        <a href="https://bilaltuylu.github.io/tablein-legal/csae-policy.html" target="_blank" rel="noopener" data-en>Child Safety</a>
+        <a href="https://bilaltuylu.github.io/tablein-legal/delete-account.html" target="_blank" rel="noopener" data-tr>Hesap Silme</a>
+        <a href="https://bilaltuylu.github.io/tablein-legal/delete-account.html" target="_blank" rel="noopener" data-en>Delete Account</a>
+      </div>
+      <div class="footer-col">
+        <h4 data-tr>İletişim</h4>
+        <h4 data-en>Contact</h4>
+        <a href="mailto:info@jointablein.com">info@jointablein.com</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 TableIn. <span data-tr>Tüm hakları saklıdır.</span><span data-en>All rights reserved.</span></span>
+      <span>jointablein.com</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Locale toggle (persists in localStorage)
+  const html = document.documentElement;
+  const body = document.body;
+  function setLang(lang){
+    body.removeAttribute('lang-tr');
+    body.removeAttribute('lang-en');
+    body.setAttribute('lang-' + lang, '');
+    html.lang = lang;
+    try{ localStorage.setItem('tablein_lang', lang); }catch(_){}
+  }
+  function toggleLang(){
+    const next = body.hasAttribute('lang-tr') ? 'en' : 'tr';
+    setLang(next);
+  }
+  (function initLang(){
+    let saved = null;
+    try{ saved = localStorage.getItem('tablein_lang'); }catch(_){}
+    if(saved === 'en' || saved === 'tr'){ setLang(saved); return; }
+    const browser = (navigator.language || 'en').slice(0,2).toLowerCase();
+    setLang(browser === 'tr' ? 'tr' : 'en');
+  })();
+
+  // Waitlist form → Supabase REST
+  const SUPABASE_URL = 'https://bvgpiscvdsfvomicurhy.supabase.co';
+  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z3Bpc2N2ZHNmdm9taWN1cmh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzNTY0NDcsImV4cCI6MjA5MzkzMjQ0N30.tX-eRP1IuJwBwa4WPulGyiJnyxbN46dBlG5JIr5MVts';
+
+  const form = document.getElementById('waitlist-form');
+  const emailInput = document.getElementById('waitlist-email');
+  const submitBtn = document.getElementById('waitlist-submit');
+  const msg = document.getElementById('waitlist-msg');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = emailInput.value.trim().toLowerCase();
+    if(!email.includes('@')){
+      msg.className = 'waitlist-msg error';
+      msg.textContent = body.hasAttribute('lang-tr') ? 'Geçerli bir e-posta gir.' : 'Please enter a valid email.';
+      return;
+    }
+    submitBtn.disabled = true;
+    msg.className = 'waitlist-msg';
+    msg.textContent = body.hasAttribute('lang-tr') ? 'Gönderiliyor...' : 'Submitting...';
+
+    try{
+      const res = await fetch(SUPABASE_URL + '/rest/v1/waitlist', {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_ANON,
+          'Authorization': 'Bearer ' + SUPABASE_ANON,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal',
+        },
+        body: JSON.stringify({
+          email,
+          source: 'landing-hero',
+          user_agent: navigator.userAgent.slice(0, 240),
+          locale: navigator.language,
+        }),
+      });
+
+      if(res.ok){
+        msg.className = 'waitlist-msg success';
+        msg.textContent = body.hasAttribute('lang-tr')
+          ? '🎉 Listedesin. Yayınlandığında haber yollarız.'
+          : "🎉 You're on the list. We'll notify you on launch.";
+        emailInput.value = '';
+      } else if(res.status === 409 || res.status === 23505){
+        msg.className = 'waitlist-msg success';
+        msg.textContent = body.hasAttribute('lang-tr')
+          ? '✅ Bu e-posta zaten listede.'
+          : '✅ This email is already on the list.';
+      } else {
+        const t = await res.text();
+        if(t.includes('duplicate') || t.includes('unique')){
+          msg.className = 'waitlist-msg success';
+          msg.textContent = body.hasAttribute('lang-tr')
+            ? '✅ Bu e-posta zaten listede.'
+            : '✅ This email is already on the list.';
+        } else {
+          throw new Error(t || res.statusText);
+        }
+      }
+    }catch(err){
+      msg.className = 'waitlist-msg error';
+      msg.textContent = body.hasAttribute('lang-tr')
+        ? 'Bir hata oluştu. Birazdan tekrar dene.'
+        : 'Something went wrong. Please try again shortly.';
+      console.error(err);
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>
