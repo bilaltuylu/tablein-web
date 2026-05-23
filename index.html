@@ -97,19 +97,35 @@
     max-width:640px;margin:0 auto 32px;
     line-height:1.5;
   }
-  .badges{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:48px}
-  .badge{
-    display:inline-flex;align-items:center;gap:10px;
-    padding:14px 22px;border-radius:14px;
-    background:var(--text);color:#000;
-    font-weight:700;font-size:15px;
-    transition:transform 0.2s,box-shadow 0.2s;
-    border:none;cursor:pointer;
+  /* Official Apple App Store + Google Play download badges */
+  .store-badges{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin-bottom:48px}
+  .store-badge{
+    position:relative;display:inline-flex;align-items:center;justify-content:center;
+    background:#000;border-radius:12px;
+    padding:0 6px;
+    transition:transform 0.2s,box-shadow 0.2s,opacity 0.2s;
+    overflow:hidden;
+    /* App Store badge svg keeps its own black background; Google Play badge
+       PNG has padding around its black background so it lines up visually
+       with the Apple one. */
   }
-  .badge:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,109,0,0.25);color:#000}
-  .badge.outline{background:transparent;color:var(--text);border:1px solid var(--border)}
-  .badge.outline:hover{background:var(--card);color:var(--text)}
-  .badge svg{width:22px;height:22px}
+  .store-badge:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,109,0,0.3)}
+  .store-badge img{display:block;height:56px;width:auto;opacity:0.92}
+  /* "Yakında / Coming soon" diagonal ribbon overlay — keeps the official
+     badge artwork intact while signalling that the apps aren't on sale yet. */
+  .store-badge-overlay{
+    position:absolute;top:6px;right:-26px;
+    background:linear-gradient(135deg,var(--primary),var(--accent));
+    color:#fff;font-size:10px;font-weight:700;
+    padding:3px 28px;
+    transform:rotate(35deg);
+    letter-spacing:0.04em;text-transform:uppercase;
+    pointer-events:none;
+    box-shadow:0 2px 6px rgba(0,0,0,0.4);
+  }
+  @media (max-width:480px){
+    .store-badge img{height:48px}
+  }
 
   .hero-phones{
     display:flex;justify-content:center;align-items:end;gap:20px;
@@ -282,11 +298,17 @@
         <span data-tr>İlgi alanlarına göre gerçek hayatta buluşmalar düzenle. Yapay zekâ algoritmaları yerine ortak bir konu seç, etrafındaki insanları o masaya davet et. Eşleşme beklemek yok, sürekli kaydırma yok — sadece gerçek sohbet, gerçek buluşma.</span>
         <span data-en>Real-life meetups based on shared interests. Skip the algorithms — pick a topic, invite people around you to your table. No matching, no swiping — just real conversation and real meetups.</span>
       </p>
-      <div class="badges">
-        <a href="#waitlist" class="badge" data-tr>📱 Yakında App Store'da</a>
-        <a href="#waitlist" class="badge" data-en>📱 Coming soon to App Store</a>
-        <a href="#waitlist" class="badge outline" data-tr>🤖 Yakında Google Play'de</a>
-        <a href="#waitlist" class="badge outline" data-en>🤖 Coming soon to Google Play</a>
+      <div class="store-badges">
+        <a href="#waitlist" class="store-badge" aria-label="Download on the App Store">
+          <img src="assets/app-store-badge.svg" alt="Download on the App Store" height="56">
+          <span class="store-badge-overlay" data-tr>Yakında</span>
+          <span class="store-badge-overlay" data-en>Coming soon</span>
+        </a>
+        <a href="#waitlist" class="store-badge" aria-label="Get it on Google Play">
+          <img src="assets/google-play-badge.png" alt="Get it on Google Play" height="56">
+          <span class="store-badge-overlay" data-tr>Yakında</span>
+          <span class="store-badge-overlay" data-en>Coming soon</span>
+        </a>
       </div>
       <div class="hero-phones">
         <img src="assets/screen-tables.png" alt="My Tables">
